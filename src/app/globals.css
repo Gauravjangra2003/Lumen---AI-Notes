@@ -138,6 +138,56 @@
   }
 }
 
+@layer components {
+  .tiptap-content {
+    @apply text-base leading-7;
+
+    & > * + * {
+      @apply mt-3;
+    }
+    & h1 {
+      @apply mt-8 text-3xl font-bold tracking-tight;
+    }
+    & h2 {
+      @apply mt-6 text-2xl font-semibold tracking-tight;
+    }
+    & h3 {
+      @apply mt-5 text-xl font-semibold;
+    }
+    & ul {
+      @apply list-disc pl-6;
+    }
+    & ol {
+      @apply list-decimal pl-6;
+    }
+    & li > p {
+      @apply my-0.5;
+    }
+    & blockquote {
+      @apply border-l-2 pl-4 text-muted-foreground italic;
+    }
+    & code {
+      @apply rounded bg-muted px-1.5 py-0.5 font-mono text-sm;
+    }
+    & pre {
+      @apply overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm;
+      & code {
+        @apply bg-transparent p-0;
+      }
+    }
+    & a {
+      @apply text-primary underline underline-offset-4;
+    }
+    & hr {
+      @apply my-6;
+    }
+    & p.is-editor-empty:first-child::before {
+      @apply pointer-events-none float-left h-0 text-muted-foreground;
+      content: attr(data-placeholder);
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

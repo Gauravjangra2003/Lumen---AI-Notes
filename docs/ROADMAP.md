@@ -27,14 +27,18 @@ Legend: `[x]` done, `[ ]` to do.
 
 ## Phase 2 — Authentication (Supabase)
 
-- [ ] Supabase browser, server and proxy clients
-- [ ] `proxy.ts` session refresh and route protection
-- [ ] Login page: email magic link + GitHub OAuth, with validation and error states
-- [ ] OAuth callback route, sign-out, user menu
+- [x] Supabase browser, server and proxy clients
+- [x] `proxy.ts` session refresh and route protection
+- [x] Login page: email + password sign-in and sign-up, with validation and error states
+- [ ] Login: email magic link + GitHub OAuth
+- [x] Email confirmation callback route, sign-out
+- [ ] User menu
 
 ## Phase 3 — Notes core
 
-- [ ] SQL migration: `notes` table, RLS policies, triggers
+- [x] SQL migration: `notes` table, RLS policies, triggers
+- [x] Flat note list in the sidebar: create, open, delete
+- [x] Basic Tiptap editor with toolbar and debounced autosave
 - [ ] Generated database types
 - [ ] Data layer: query key factory, queries, mutations with optimistic updates
 - [ ] Sidebar page tree: nested pages, create, rename, favorite, trash, restore

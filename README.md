@@ -43,7 +43,12 @@ npm install
 cp .env.example .env.local   # then fill in the values
 ```
 
-### 3. Run
+### 3. Create the database tables
+
+In the Supabase dashboard open **SQL Editor → New query**, paste the contents of
+[`supabase/migrations/0001_notes.sql`](./supabase/migrations/0001_notes.sql) and click **Run**.
+
+### 4. Run
 
 ```bash
 npm run dev
