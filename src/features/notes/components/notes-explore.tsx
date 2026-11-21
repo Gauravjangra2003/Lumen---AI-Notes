@@ -1,6 +1,7 @@
-import { Brain, LayoutTemplate } from "lucide-react";
+import { Brain, LayoutTemplate, Quote } from "lucide-react";
 
 import { FeatureCard } from "@/components/feature-card";
+import { DailyQuoteDialog } from "@/features/quotes";
 
 export function NotesExplore() {
   return (
@@ -22,6 +23,16 @@ export function NotesExplore() {
           title="Templates"
           description="Start a note from a fresh mix of ready-made designs."
           accentClassName="bg-sky-500/15 text-sky-500"
+        />
+        <DailyQuoteDialog
+          trigger={
+            <FeatureCard
+              icon={Quote}
+              title="Daily quote"
+              description="Open a random dose of inspiration whenever you need it."
+              accentClassName="bg-amber-500/15 text-amber-500"
+            />
+          }
         />
       </div>
     </section>
