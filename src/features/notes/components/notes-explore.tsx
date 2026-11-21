@@ -1,6 +1,6 @@
 import { Brain, LayoutTemplate, Quote } from "lucide-react";
 
-import { FeatureCard } from "@/components/feature-card";
+import { FeatureCard } from "@/components/shared/feature-card";
 import { DailyQuoteDialog } from "@/features/quotes";
 
 export function NotesExplore() {
