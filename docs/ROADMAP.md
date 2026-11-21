@@ -11,12 +11,12 @@ Legend: `[x]` done, `[ ]` to do.
 ## Phase 0 — Foundation
 
 - [x] Architecture and roadmap docs
-- [ ] Move code into `src/`, set up path aliases
-- [ ] Prettier (with Tailwind class sorting) and a stricter ESLint config
-- [ ] Husky, lint-staged and commitlint to enforce commit conventions
-- [ ] Zod-validated environment variables plus `.env.example`
-- [ ] shadcn/ui initialised, design tokens, Geist fonts, light and dark themes
-- [ ] App providers: theme, TanStack Query, tooltips, toasts
+- [x] Move code into `src/`, set up path aliases
+- [x] Prettier (with Tailwind class sorting) and a stricter ESLint config
+- [x] Husky, lint-staged and commitlint to enforce commit conventions
+- [x] Zod-validated environment variables plus `.env.example`
+- [x] shadcn/ui initialised, design tokens, Geist fonts, light and dark themes
+- [x] App providers: theme, TanStack Query, tooltips, toasts
 
 ## Phase 1 — Design system and app shell
 

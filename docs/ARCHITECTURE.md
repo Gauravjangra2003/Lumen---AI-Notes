@@ -84,6 +84,7 @@ src/
 │  ├─ ai/                       # components/, hooks/, prompts/, schemas/
 │  ├─ search/                   # Command palette + semantic search
 │  └─ chat/                     # Chat-with-notes panel
+├─ config/                      # Static app config (site metadata, navigation)
 ├─ hooks/                       # Generic hooks (useDebounce, useMediaQuery, useHotkey)
 ├─ lib/
 │  ├─ supabase/                 # Browser, server and proxy clients
@@ -190,6 +191,10 @@ as a "try again in a moment" state, not a crash.
 - **Errors:** route-level `error.tsx` / `not-found.tsx`, an error boundary around
   the editor, and toasts (Sonner) for mutation failures.
 - **Loading:** skeletons that match the final layout; Suspense for streamed server UI.
+- **Theming:** a small custom `ThemeProvider` instead of `next-themes`. An inline
+  `<head>` script applies the stored theme before first paint (no flash), and
+  `useSyncExternalStore` keeps React in sync with `localStorage` and the OS
+  preference without hydration mismatches.
 - **Accessibility:** Radix primitives, visible focus rings, keyboard shortcuts with
   discoverable hints, `aria-live` for streaming AI output, reduced-motion support.
 - **Performance:** the editor and chat panel are lazy-loaded, the sidebar tree is
