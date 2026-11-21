@@ -3,6 +3,8 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant sidebar-collapsed (&:where([data-sidebar-collapsed], [data-sidebar-collapsed] *));
+@custom-variant sidebar-resizing (&:where([data-sidebar-resizing], [data-sidebar-resizing] *));
 
 @theme inline {
   --color-background: var(--background);
@@ -135,6 +137,10 @@
   }
   html {
     @apply font-sans;
+    --sidebar-width: 16rem;
+  }
+  html[data-sidebar-resizing] {
+    @apply cursor-col-resize select-none;
   }
 }
 

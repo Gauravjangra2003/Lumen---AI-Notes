@@ -42,9 +42,25 @@ find old notes, and answer questions using your own notes.
 
 - All your notes are listed in the sidebar.
 - Open any note with one click.
+- **Search** notes by title or by words inside them. Matches are highlighted.
+- **Sort** by date created, last edited or title, and **filter** to only shared notes.
+- **Resize** the sidebar by dragging its edge (double-click resets it), or
+  **collapse** it with the panel button or `⌘\` / `Ctrl+\`. Lumen remembers both.
 - Delete a note from its menu (the three-dot button).
 
-### 5. Explore section (on the notes home page)
+### 5. Share and download
+
+- **Download as PDF** from a note's three-dot menu. Lumen opens the print
+  dialog with a clean, light layout. Pick "Save as PDF".
+- **Share** a note with a read-only link. Choose who can read it:
+  - **Only me:** sharing is off.
+  - **Anyone with the link:** no sign-in needed.
+  - **Only people you invite:** add their email addresses. They sign in with
+    that (confirmed) email to read the note.
+- **Reset link** makes a new link and turns the old one off.
+- Readers can't edit the note, but they can download it as a PDF.
+
+### 6. Explore section (on the notes home page)
 
 - **Quiz:** answer random questions one at a time. You see right or wrong
   after each answer and your score at the end. Every round gives you a new
@@ -57,7 +73,7 @@ find old notes, and answer questions using your own notes.
 - **Daily quote:** opens a popup with a random inspiring quote. Click
   "Another quote" for a new one, or close it.
 
-### 6. Works everywhere
+### 7. Works everywhere
 
 - Works on phone, tablet and computer screens.
 - Light and dark theme, which follows your device setting.
@@ -115,8 +131,11 @@ cp .env.example .env.local   # then fill in your keys
 
 ### 3. Create the database tables
 
-In the Supabase dashboard open **SQL Editor → New query**, paste everything from
-[`supabase/migrations/0001_notes.sql`](./supabase/migrations/0001_notes.sql) and click **Run**.
+In the Supabase dashboard open **SQL Editor → New query**, and run each file in
+[`supabase/migrations`](./supabase/migrations) in order:
+
+1. [`0001_notes.sql`](./supabase/migrations/0001_notes.sql): notes table and security rules
+2. [`0002_note_sharing.sql`](./supabase/migrations/0002_note_sharing.sql): share links and invites
 
 ### 4. Start the app
 

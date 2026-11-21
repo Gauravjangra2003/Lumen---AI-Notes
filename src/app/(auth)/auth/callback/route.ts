@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
 
+import { safeRedirectPath } from "@/lib/safe-redirect";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
@@ -21,5 +22,5 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/login?error=confirmation_failed`);
   }
 
-  return NextResponse.redirect(`${origin}/notes`);
+  return NextResponse.redirect(`${origin}${safeRedirectPath(searchParams.get("next"))}`);
 }

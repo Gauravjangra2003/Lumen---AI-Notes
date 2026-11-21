@@ -9,6 +9,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { safeRedirectPath } from "@/lib/safe-redirect";
 import { createClient } from "@/lib/supabase/client";
 
 const credentialsSchema = z.object({
@@ -41,6 +42,7 @@ export function LoginForm() {
 
     setPending(true);
     const supabase = createClient();
+    const next = safeRedirectPath(new URLSearchParams(window.location.search).get("next"));
 
     if (mode === "sign-in") {
       const { error: signInError } = await supabase.auth.signInWithPassword(parsed.data);
@@ -49,14 +51,16 @@ export function LoginForm() {
         setPending(false);
         return;
       }
-      router.replace("/notes");
+      router.replace(next);
       router.refresh();
       return;
     }
 
     const { data, error: signUpError } = await supabase.auth.signUp({
       ...parsed.data,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+      },
     });
     setPending(false);
 
@@ -67,7 +71,7 @@ export function LoginForm() {
 
     if (data.session) {
       toast.success("Account created");
-      router.replace("/notes");
+      router.replace(next);
       router.refresh();
       return;
     }

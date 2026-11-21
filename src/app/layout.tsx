@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site";
 import { themeInitScript } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 import { AppProviders } from "@/providers/app-providers";
+import { sidebarInitScript } from "@/stores/sidebar-config";
 
 import "./globals.css";
 
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: sidebarInitScript }} />
       </head>
       <body className="flex min-h-full flex-col">
         <AppProviders>{children}</AppProviders>

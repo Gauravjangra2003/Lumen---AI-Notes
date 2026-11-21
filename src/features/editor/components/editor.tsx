@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { EditorContent, useEditor, type JSONContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extensions";
 
+import { documentExtensions } from "../extensions";
 import { EditorToolbar } from "./editor-toolbar";
 
 export type EditorChange = {
@@ -25,7 +25,7 @@ export function Editor({ initialContent, onChange }: EditorProps) {
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      ...documentExtensions,
       Placeholder.configure({ placeholder: "Start writing, or type # for a heading…" }),
     ],
     content: initialContent,

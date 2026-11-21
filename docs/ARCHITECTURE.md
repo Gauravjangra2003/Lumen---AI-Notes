@@ -71,6 +71,7 @@ src/
 │  ├─ (marketing)/              # Public landing page
 │  ├─ (auth)/                   # Login, OAuth callback
 │  ├─ (workspace)/              # Authenticated app: /notes, /notes/[noteId], /notes/quiz, /notes/templates
+│  ├─ share/[token]/            # Public read-only view of a shared note (server-rendered)
 │  ├─ api/ai/                   # Route Handlers: completion, metadata, chat, embed
 │  ├─ layout.tsx                # Root layout, fonts, providers
 │  └─ globals.css               # Tailwind + design tokens
@@ -120,7 +121,7 @@ docs/                           # Architecture, roadmap, decisions
 | Kind of state                | Tool                         | Example                            |
 | ---------------------------- | ---------------------------- | ---------------------------------- |
 | Server data                  | TanStack Query               | Note list, single note, favorites  |
-| UI state shared across trees | Zustand                      | Sidebar collapsed, chat panel open |
+| UI state shared across trees | `createPersistedStore`       | Sidebar width/collapsed, list sort |
 | URL state                    | Route params / search params | Active note id, search query       |
 | Local component state        | `useState` / `useReducer`    | Rename input, popover open         |
 | Form state                   | React Hook Form + Zod        | Login form, settings               |
@@ -151,7 +152,12 @@ notes
   position      double precision (fractional ordering for drag and drop)
   is_favorite   boolean
   archived_at   timestamptz (null = active; set = in trash)
+  share_token   uuid unique (the /share/<token> link; replaced on "Reset link")
+  share_access  text: private | public | invited
   created_at / updated_at
+
+note_share_invites                -- who may read an invite-only note
+  note_id (fk cascade), email (lowercase), pk (note_id, email)
 
 note_chunks                       -- semantic search + RAG
   id, note_id (fk cascade), user_id, chunk_index,
@@ -160,6 +166,10 @@ note_chunks                       -- semantic search + RAG
 ```
 
 - **RLS on every table:** `user_id = auth.uid()` for select, insert, update, delete.
+- **`get_shared_note(token)`** is `security definer`: `notes` RLS stays
+  owner-only, and this function returns one note by token only to its owner,
+  to anyone when `public`, or to invitees whose _confirmed_ account email is on
+  the invite list.
 - **`match_note_chunks(query_embedding, match_count)`** is a SQL function with
   `security invoker`, so RLS still applies during vector search.
 
@@ -197,6 +207,13 @@ as a "try again in a moment" state, not a crash.
 - **Errors:** route-level `error.tsx` / `not-found.tsx`, an error boundary around
   the editor, and toasts (Sonner) for mutation failures.
 - **Loading:** skeletons that match the final layout; Suspense for streamed server UI.
+- **Persisted UI state:** sidebar width/collapsed live in `localStorage`. An
+  inline `<head>` script applies them to `<html>` (CSS variable + data
+  attribute) before first paint; `createPersistedStore` syncs React via
+  `useSyncExternalStore`, including across tabs.
+- **Static document rendering:** `features/editor/extensions.ts` is the single
+  schema used by the editor, the server-rendered share page
+  (`@tiptap/static-renderer`) and PDF export (print of a sandboxed iframe).
 - **Theming:** a small custom `ThemeProvider` instead of `next-themes`. An inline
   `<head>` script applies the stored theme before first paint (no flash), and
   `useSyncExternalStore` keeps React in sync with `localStorage` and the OS

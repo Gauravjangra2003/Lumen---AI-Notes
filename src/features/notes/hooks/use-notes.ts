@@ -1,10 +1,17 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { notesKeys } from "../api/keys";
-import { createNote, deleteNote, fetchNote, fetchNotes, updateNote } from "../api/notes";
+import {
+  createNote,
+  deleteNote,
+  fetchNote,
+  fetchNotes,
+  searchNotes,
+  updateNote,
+} from "../api/notes";
 import type { Note, NoteInsert, NoteSummary, NoteUpdate } from "../types";
 
 function toSummary(note: Note): NoteSummary {
@@ -12,6 +19,7 @@ function toSummary(note: Note): NoteSummary {
     id: note.id,
     title: note.title,
     icon: note.icon,
+    share_access: note.share_access,
     created_at: note.created_at,
     updated_at: note.updated_at,
   };
@@ -19,6 +27,16 @@ function toSummary(note: Note): NoteSummary {
 
 export function useNotes() {
   return useQuery({ queryKey: notesKeys.lists(), queryFn: fetchNotes });
+}
+
+export function useNoteSearch(query: string) {
+  const trimmed = query.trim();
+  return useQuery({
+    queryKey: notesKeys.search(trimmed),
+    queryFn: () => searchNotes(trimmed),
+    enabled: trimmed.length > 0,
+    placeholderData: keepPreviousData,
+  });
 }
 
 export function useNote(id: string) {
@@ -42,6 +60,7 @@ export function useCreateNote() {
         toSummary(note),
         ...notes,
       ]);
+      void queryClient.invalidateQueries({ queryKey: notesKeys.searches(), refetchType: "none" });
     },
     onError: () => toast.error("Couldn't create a note. Please try again."),
   });
@@ -53,7 +72,13 @@ export function useUpdateNote(id: string) {
   return useMutation({
     mutationFn: (patch: NoteUpdate) => updateNote(id, patch),
     onMutate: async (patch) => {
-      if (patch.title === undefined && patch.icon === undefined) return;
+      if (
+        patch.title === undefined &&
+        patch.icon === undefined &&
+        patch.share_access === undefined
+      ) {
+        return;
+      }
       await queryClient.cancelQueries({ queryKey: notesKeys.lists() });
       queryClient.setQueryData<NoteSummary[]>(notesKeys.lists(), (notes) =>
         notes?.map((note) =>
@@ -62,6 +87,7 @@ export function useUpdateNote(id: string) {
                 ...note,
                 ...(patch.title !== undefined && { title: patch.title }),
                 ...(patch.icon !== undefined && { icon: patch.icon }),
+                ...(patch.share_access !== undefined && { share_access: patch.share_access }),
               }
             : note,
         ),
@@ -72,6 +98,7 @@ export function useUpdateNote(id: string) {
       queryClient.setQueryData<NoteSummary[]>(notesKeys.lists(), (notes) =>
         notes?.map((item) => (item.id === id ? toSummary(note) : item)),
       );
+      void queryClient.invalidateQueries({ queryKey: notesKeys.searches(), refetchType: "none" });
     },
   });
 }
@@ -95,6 +122,7 @@ export function useDeleteNote() {
     },
     onSuccess: (_data, id) => {
       queryClient.removeQueries({ queryKey: notesKeys.detail(id) });
+      void queryClient.invalidateQueries({ queryKey: notesKeys.searches() });
       toast.success("Note deleted");
     },
   });

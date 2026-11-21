@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
+import { safeRedirectPath } from "@/lib/safe-redirect";
 import type { Database } from "@/types/database.types";
 
 const PROTECTED_PREFIXES = ["/notes"];
@@ -35,9 +36,7 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   const redirectTo = (path: string) => {
-    const url = request.nextUrl.clone();
-    url.pathname = path;
-    url.search = "";
+    const url = new URL(path, request.nextUrl.origin);
     const redirect = NextResponse.redirect(url);
     response.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
     return redirect;
@@ -48,7 +47,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (isSignedIn && AUTH_PAGES.includes(pathname)) {
-    return redirectTo("/notes");
+    return redirectTo(safeRedirectPath(request.nextUrl.searchParams.get("next")));
   }
 
   return response;

@@ -10,8 +10,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Editor, type EditorChange } from "@/features/editor/components/editor";
 import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
 
+import { downloadPdf } from "../hooks/use-download-pdf";
 import { useNote, useUpdateNote } from "../hooks/use-notes";
 import type { Note, NoteUpdate } from "../types";
+import { NoteActions } from "./note-actions";
 
 const AUTOSAVE_DELAY_MS = 800;
 
@@ -83,8 +85,11 @@ function NoteDocument({ note }: { note: Note }) {
     [scheduleSave],
   );
 
+  const latestContent = useRef(note.content as JSONContent | null);
+
   const handleContentChange = useCallback(
     ({ content, plainText }: EditorChange) => {
+      latestContent.current = content;
       queueChange({ content, plain_text: plainText });
     },
     [queueChange],
@@ -99,8 +104,12 @@ function NoteDocument({ note }: { note: Note }) {
 
   return (
     <article className="space-y-2">
-      <div className="flex h-6 items-center justify-end">
+      <div className="flex h-8 items-center justify-end gap-2">
         <SaveIndicator status={status} onRetry={save} />
+        <NoteActions
+          note={note}
+          onDownloadPdf={() => downloadPdf({ title, content: latestContent.current })}
+        />
       </div>
       <input
         value={title}

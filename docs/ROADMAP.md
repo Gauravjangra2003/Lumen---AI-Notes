@@ -39,6 +39,10 @@ Legend: `[x]` done, `[ ]` to do.
 - [x] SQL migration: `notes` table, RLS policies, triggers
 - [x] Flat note list in the sidebar: create, open, delete
 - [x] Basic Tiptap editor with toolbar and debounced autosave
+- [x] Sidebar search (title + content), sort and "shared only" filter
+- [x] Resizable, collapsible sidebar persisted without a flash (`⌘\`)
+- [x] PDF export through a print-ready, script-free iframe
+- [x] Read-only sharing: revocable link, public or invite-only access (migration `0002`)
 - [ ] Generated database types
 - [ ] Data layer: query key factory, queries, mutations with optimistic updates
 - [ ] Sidebar page tree: nested pages, create, rename, favorite, trash, restore
