@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { notesKeys } from "../api/keys";
 import { createNote, deleteNote, fetchNote, fetchNotes, updateNote } from "../api/notes";
-import type { Note, NoteSummary, NoteUpdate } from "../types";
+import type { Note, NoteInsert, NoteSummary, NoteUpdate } from "../types";
 
 function toSummary(note: Note): NoteSummary {
   return {
@@ -35,7 +35,7 @@ export function useCreateNote() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createNote,
+    mutationFn: (input?: NoteInsert) => createNote(input),
     onSuccess: (note) => {
       queryClient.setQueryData(notesKeys.detail(note.id), note);
       queryClient.setQueryData<NoteSummary[]>(notesKeys.lists(), (notes = []) => [

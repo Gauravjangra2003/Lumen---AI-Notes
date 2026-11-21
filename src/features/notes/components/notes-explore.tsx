@@ -1,4 +1,4 @@
-import { Brain } from "lucide-react";
+import { Brain, LayoutTemplate } from "lucide-react";
 
 import { FeatureCard } from "@/components/feature-card";
 
@@ -15,6 +15,13 @@ export function NotesExplore() {
           title="Quiz"
           description="Test yourself with random questions, one at a time."
           accentClassName="bg-ai-muted text-ai"
+        />
+        <FeatureCard
+          href="/notes/templates"
+          icon={LayoutTemplate}
+          title="Templates"
+          description="Start a note from a fresh mix of ready-made designs."
+          accentClassName="bg-sky-500/15 text-sky-500"
         />
       </div>
     </section>

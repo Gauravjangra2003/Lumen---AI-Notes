@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 
-import type { Note, NoteSummary, NoteUpdate } from "../types";
+import type { Note, NoteInsert, NoteSummary, NoteUpdate } from "../types";
 
 const SUMMARY_COLUMNS = "id, title, icon, created_at, updated_at";
 
@@ -19,8 +19,8 @@ export async function fetchNote(id: string): Promise<Note | null> {
   return data;
 }
 
-export async function createNote(): Promise<Note> {
-  const { data, error } = await createClient().from("notes").insert({}).select("*").single();
+export async function createNote(input: NoteInsert = {}): Promise<Note> {
+  const { data, error } = await createClient().from("notes").insert(input).select("*").single();
   if (error) throw error;
   return data;
 }
