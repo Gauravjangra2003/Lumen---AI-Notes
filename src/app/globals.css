@@ -140,7 +140,7 @@
 
 @layer components {
   .tiptap-content {
-    @apply text-base leading-7;
+    @apply text-base leading-7 break-words;
 
     & > * + * {
       @apply mt-3;

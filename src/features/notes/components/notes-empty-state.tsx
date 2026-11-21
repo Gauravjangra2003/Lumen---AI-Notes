@@ -12,7 +12,7 @@ export function NotesEmptyState() {
   const createNote = useCreateNote();
 
   return (
-    <div className="flex flex-col items-center gap-4 py-32 text-center">
+    <div className="flex flex-col items-center gap-4 py-20 text-center md:py-32">
       <FilePlus2 className="size-10 text-muted-foreground" />
       <div className="space-y-1">
         <h1 className="text-xl font-semibold">Pick a note or start a new one</h1>

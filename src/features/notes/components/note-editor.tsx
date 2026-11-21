@@ -111,7 +111,7 @@ function NoteDocument({ note }: { note: Note }) {
         onBlur={flush}
         placeholder="Untitled"
         aria-label="Note title"
-        className="w-full bg-transparent text-4xl font-bold tracking-tight outline-none placeholder:text-muted-foreground/50"
+        className="w-full bg-transparent text-3xl font-bold tracking-tight outline-none placeholder:text-muted-foreground/50 md:text-4xl"
       />
       <Editor initialContent={note.content as JSONContent | null} onChange={handleContentChange} />
     </article>

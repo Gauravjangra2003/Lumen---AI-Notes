@@ -98,7 +98,7 @@ export function EditorToolbar({ editor }: { editor: Editor }) {
     <div
       role="toolbar"
       aria-label="Formatting"
-      className="flex flex-wrap items-center gap-0.5 rounded-lg border bg-background p-1"
+      className="flex [scrollbar-width:none] items-center gap-0.5 overflow-x-auto rounded-lg border bg-background p-1 md:flex-wrap"
     >
       {ACTIONS.map((action, index) => (
         <Tooltip key={action.label}>
@@ -106,10 +106,10 @@ export function EditorToolbar({ editor }: { editor: Editor }) {
             <Button
               type="button"
               variant="ghost"
-              size="icon-sm"
+              size="icon"
+              className="shrink-0 aria-pressed:bg-muted aria-pressed:text-foreground md:size-7"
               aria-label={action.label}
               aria-pressed={active[index]}
-              className="aria-pressed:bg-muted aria-pressed:text-foreground"
               onClick={() => action.run(editor)}
             >
               <action.icon />

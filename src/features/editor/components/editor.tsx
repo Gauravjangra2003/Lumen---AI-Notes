@@ -45,7 +45,7 @@ export function Editor({ initialContent, onChange }: EditorProps) {
 
   return (
     <div className="space-y-4">
-      <div className="sticky top-0 z-10 bg-background/80 py-2 backdrop-blur">
+      <div className="sticky top-12 z-10 bg-background/80 py-2 backdrop-blur md:top-0">
         <EditorToolbar editor={editor} />
       </div>
       <EditorContent editor={editor} />

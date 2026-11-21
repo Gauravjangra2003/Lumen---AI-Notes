@@ -20,20 +20,29 @@ import { cn } from "@/lib/utils";
 
 import { useCreateNote, useDeleteNote, useNotes } from "../hooks/use-notes";
 
-export function NotesSidebar({ className }: { className?: string }) {
+type NotesSidebarProps = {
+  className?: string;
+  /** Called after the user picks or creates a note, e.g. to close the mobile drawer. */
+  onNavigate?: () => void;
+};
+
+export function NotesSidebar({ className, onNavigate }: NotesSidebarProps) {
   const router = useRouter();
   const createNote = useCreateNote();
 
   function handleCreate() {
     createNote.mutate(undefined, {
-      onSuccess: (note) => router.push(`/notes/${note.id}`),
+      onSuccess: (note) => {
+        router.push(`/notes/${note.id}`);
+        onNavigate?.();
+      },
     });
   }
 
   return (
-    <aside className={cn("flex h-full w-64 shrink-0 flex-col border-r bg-sidebar", className)}>
+    <aside className={cn("flex h-full w-64 shrink-0 flex-col bg-sidebar", className)}>
       <div className="flex items-center justify-between px-4 py-3">
-        <Link href="/notes" className="font-semibold tracking-tight">
+        <Link href="/notes" onClick={onNavigate} className="font-semibold tracking-tight">
           {siteConfig.name}
         </Link>
         <Button
@@ -49,7 +58,7 @@ export function NotesSidebar({ className }: { className?: string }) {
 
       <nav aria-label="Notes" className="flex-1 overflow-y-auto px-2 pb-2">
         <Suspense fallback={<NotesListSkeleton />}>
-          <NotesList />
+          <NotesList onNavigate={onNavigate} />
         </Suspense>
       </nav>
 
@@ -68,7 +77,7 @@ function NotesListSkeleton() {
   );
 }
 
-function NotesList() {
+function NotesList({ onNavigate }: { onNavigate?: () => void }) {
   const router = useRouter();
   const params = useParams<{ noteId?: string }>();
   const activeId = params.noteId;
@@ -104,7 +113,8 @@ function NotesList() {
             <Link
               href={`/notes/${note.id}`}
               aria-current={note.id === activeId ? "page" : undefined}
-              className="flex h-8 items-center gap-2 rounded-md px-2 pr-8 text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground aria-[current=page]:bg-sidebar-accent aria-[current=page]:font-medium aria-[current=page]:text-sidebar-accent-foreground"
+              onClick={onNavigate}
+              className="flex h-10 items-center gap-2 rounded-md px-2 pr-8 text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground aria-[current=page]:bg-sidebar-accent aria-[current=page]:font-medium aria-[current=page]:text-sidebar-accent-foreground md:h-8"
             >
               {note.icon ? (
                 <span aria-hidden>{note.icon}</span>
@@ -116,15 +126,15 @@ function NotesList() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-                  size="icon-xs"
+                  size="icon-sm"
                   variant="ghost"
                   aria-label={`Options for ${note.title || "Untitled"}`}
-                  className="absolute top-1/2 right-1 -translate-y-1/2 opacity-0 group-hover/note:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100"
+                  className="absolute top-1/2 right-1 -translate-y-1/2 md:size-6 md:opacity-0 md:group-hover/note:opacity-100 md:focus-visible:opacity-100 md:aria-expanded:opacity-100"
                 >
                   <MoreHorizontal />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" side="right">
+              <DropdownMenuContent align="end">
                 <DropdownMenuItem variant="destructive" onSelect={() => handleDelete(note.id)}>
                   <Trash2 /> Delete
                 </DropdownMenuItem>
