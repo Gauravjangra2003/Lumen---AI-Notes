@@ -44,6 +44,13 @@ Legend: `[x]` done, `[ ]` to do.
 - [ ] Sidebar page tree: nested pages, create, rename, favorite, trash, restore
 - [ ] Drag-and-drop reordering and nesting (dnd-kit + fractional positions)
 
+## Phase 3.5 — Explore
+
+- [x] Explore cards on the notes home (shared `FeatureCard`, responsive grid)
+- [x] Quiz: random rounds of five questions, one at a time, with feedback and score
+- [x] Templates: shuffled gallery of note designs that create a pre-filled note
+- [x] Daily quote: popup with a random quote, cancel and "another quote" actions
+
 ## Phase 4 — Editor
 
 - [ ] Tiptap editor with headings, lists, to-dos, quotes, code blocks, links

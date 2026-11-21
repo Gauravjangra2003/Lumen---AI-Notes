@@ -13,6 +13,7 @@ base, with answers that cite their sources.
 - **Smart metadata:** AI-generated titles, tags and summaries
 - **Semantic search** in a ⌘K command palette (Gemini embeddings + pgvector)
 - **Chat with your notes:** retrieval-augmented answers with clickable citations
+- **Explore:** a random one-question-at-a-time quiz, a shuffled gallery of note templates, and a daily quote popup
 - **Polished UX:** keyboard-first, optimistic updates, dark mode, responsive, accessible
 
 ## Tech stack

@@ -70,7 +70,7 @@ src/
 ├─ app/                         # Routing only: thin pages that compose features
 │  ├─ (marketing)/              # Public landing page
 │  ├─ (auth)/                   # Login, OAuth callback
-│  ├─ (workspace)/              # Authenticated app: /notes, /notes/[noteId]
+│  ├─ (workspace)/              # Authenticated app: /notes, /notes/[noteId], /notes/quiz, /notes/templates
 │  ├─ api/ai/                   # Route Handlers: completion, metadata, chat, embed
 │  ├─ layout.tsx                # Root layout, fonts, providers
 │  └─ globals.css               # Tailwind + design tokens
@@ -83,7 +83,10 @@ src/
 │  ├─ editor/                   # components/, extensions/ (Tiptap), hooks/
 │  ├─ ai/                       # components/, hooks/, prompts/, schemas/
 │  ├─ search/                   # Command palette + semantic search
-│  └─ chat/                     # Chat-with-notes panel
+│  ├─ chat/                     # Chat-with-notes panel
+│  ├─ quiz/                     # data/ (question bank), components/, types.ts
+│  ├─ templates/                # data/ (note templates), lib/ (Tiptap JSON builders), components/
+│  └─ quotes/                   # data/ (quotes), components/ (daily quote dialog)
 ├─ config/                      # Static app config (site metadata, navigation)
 ├─ hooks/                       # Generic hooks (useDebounce, useMediaQuery, useHotkey)
 ├─ lib/
@@ -106,6 +109,9 @@ docs/                           # Architecture, roadmap, decisions
 - `features/x` may import from `components/`, `hooks/`, `lib/`, `stores/`, `types/`.
 - A feature imports **another feature only through its public `index.ts`**.
 - `components/ui` imports nothing app-specific.
+- Random content (quiz rounds, template picks) is generated only in the browser,
+  behind `useIsClient` or in event handlers, so prerendered HTML never mismatches
+  and Cache Components never sees `Math.random()` during prerender.
 
 ---
 
