@@ -11,24 +11,24 @@ plan lives in [`ROADMAP.md`](./ROADMAP.md).
 
 ## 1. Goals and constraints
 
-| Goal                     | What it means in practice                                                       |
-| ------------------------ | ------------------------------------------------------------------------------- |
-| Frontend depth           | Rich editor, keyboard-first UX, optimistic updates, animations, responsive.     |
-| Meaningful AI            | AI is part of the workflow (writing, search, Q&A), not a bolted-on chatbot.     |
-| Zero cost                | Every service runs on a free tier with no credit card.                          |
-| Production habits        | Typed end to end, validated inputs, RLS-secured data, tests, CI, conventional commits. |
+| Goal              | What it means in practice                                                              |
+| ----------------- | -------------------------------------------------------------------------------------- |
+| Frontend depth    | Rich editor, keyboard-first UX, optimistic updates, animations, responsive.            |
+| Meaningful AI     | AI is part of the workflow (writing, search, Q&A), not a bolted-on chatbot.            |
+| Zero cost         | Every service runs on a free tier with no credit card.                                 |
+| Production habits | Typed end to end, validated inputs, RLS-secured data, tests, CI, conventional commits. |
 
 ### Free-tier stack
 
-| Concern        | Choice                                   | Free tier notes                                  |
-| -------------- | ---------------------------------------- | ------------------------------------------------ |
-| Framework      | Next.js 16 (App Router) + React 19       | Open source                                      |
-| Styling / UI   | Tailwind CSS 4 + shadcn/ui (Radix)       | Open source, components live in our repo         |
-| Auth + DB      | Supabase (Postgres, Auth, pgvector)      | 2 free projects, 500 MB DB                       |
-| LLM            | Google Gemini via Vercel AI SDK          | Free API key from Google AI Studio               |
-| Embeddings     | Gemini embedding model (768 dimensions)  | Same free key                                    |
-| Hosting        | Vercel Hobby                             | Free for personal projects                       |
-| CI             | GitHub Actions                           | Free for public repos                            |
+| Concern      | Choice                                  | Free tier notes                          |
+| ------------ | --------------------------------------- | ---------------------------------------- |
+| Framework    | Next.js 16 (App Router) + React 19      | Open source                              |
+| Styling / UI | Tailwind CSS 4 + shadcn/ui (Radix)      | Open source, components live in our repo |
+| Auth + DB    | Supabase (Postgres, Auth, pgvector)     | 2 free projects, 500 MB DB               |
+| LLM          | Google Gemini via Vercel AI SDK         | Free API key from Google AI Studio       |
+| Embeddings   | Gemini embedding model (768 dimensions) | Same free key                            |
+| Hosting      | Vercel Hobby                            | Free for personal projects               |
+| CI           | GitHub Actions                          | Free for public repos                    |
 
 ---
 
@@ -110,14 +110,14 @@ docs/                           # Architecture, roadmap, decisions
 
 ## 4. State management
 
-| Kind of state                 | Tool                    | Example                                       |
-| ----------------------------- | ----------------------- | --------------------------------------------- |
-| Server data                   | TanStack Query          | Note list, single note, favorites             |
-| UI state shared across trees  | Zustand                 | Sidebar collapsed, chat panel open            |
-| URL state                     | Route params / search params | Active note id, search query             |
-| Local component state         | `useState` / `useReducer` | Rename input, popover open                  |
-| Form state                    | React Hook Form + Zod   | Login form, settings                          |
-| Editor document state         | Tiptap                  | Content, selection                            |
+| Kind of state                | Tool                         | Example                            |
+| ---------------------------- | ---------------------------- | ---------------------------------- |
+| Server data                  | TanStack Query               | Note list, single note, favorites  |
+| UI state shared across trees | Zustand                      | Sidebar collapsed, chat panel open |
+| URL state                    | Route params / search params | Active note id, search query       |
+| Local component state        | `useState` / `useReducer`    | Rename input, popover open         |
+| Form state                   | React Hook Form + Zod        | Login form, settings               |
+| Editor document state        | Tiptap                       | Content, selection                 |
 
 **Query key factory.** All keys come from one place (`features/notes/api/keys.ts`),
 so invalidation is consistent and typo-proof.
@@ -160,13 +160,13 @@ note_chunks                       -- semantic search + RAG
 
 ## 6. AI features
 
-| Feature                 | Where                 | Technique                                              |
-| ----------------------- | --------------------- | ------------------------------------------------------ |
+| Feature                 | Where                                   | Technique                                                                                       |
+| ----------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | Inline writing commands | Editor bubble menu, `/ai` slash command | `streamText`; commands: improve, fix grammar, shorten, expand, change tone, translate, continue |
-| Smart metadata          | Note header           | Structured output (Zod schema) → title, tags, summary  |
-| Semantic search         | ⌘K command palette    | Gemini embeddings + pgvector cosine similarity         |
-| Chat with your notes    | Side panel            | Retrieval-augmented generation (RAG) with streamed answers and clickable citations |
-| Related notes           | Note footer           | Nearest neighbours of the note's own embedding         |
+| Smart metadata          | Note header                             | Structured output (Zod schema) → title, tags, summary                                           |
+| Semantic search         | ⌘K command palette                      | Gemini embeddings + pgvector cosine similarity                                                  |
+| Chat with your notes    | Side panel                              | Retrieval-augmented generation (RAG) with streamed answers and clickable citations              |
+| Related notes           | Note footer                             | Nearest neighbours of the note's own embedding                                                  |
 
 **Indexing pipeline.** After a note is saved and has been idle for a short
 while, the client calls `/api/ai/embed`. The handler splits the plain text into
